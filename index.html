@@ -14,27 +14,31 @@
 </form>
 
 <script>
-document.getElementById("telegramForm").addEventListener("submit", function(event) {
+
+document.getElementById("telegramForm").addEventListener("submit", async function(event) {
     event.preventDefault();
-    
+
     const message = document.getElementById("message").value;
-    
-    fetch('/send-message', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message })
-    })
-    .then(response => {
+
+    try {
+        const response = await fetch('/send-message', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+
         if (response.ok) {
             alert('Сообщение успешно отправлено!');
         } else {
             alert('Произошла ошибка при отправке сообщения.');
         }
-    })
-    .catch(error => console.error('Ошибка:', error));
-});
+    } catch (error) {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при отправке сообщения.');
+    }
+});    
 </script>
 </body>
 </html>
